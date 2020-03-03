@@ -12,9 +12,11 @@
 # Sample call: python sequenceGenerator.py 50 25 25 25 25 3 .03 "output.txt"
 
 import sys
+import random
 
 
 def main():
+#  -------------------INPUT VERIFICATION AND RECORDING-------------------
     if(len(sys.argv) < 9): # Verifying there aren't too few inputs
         print("Error: Too few inputs.\n")
         print("Inputs should be in the form of [run program] n a c g t k p \"o\"")
@@ -84,8 +86,45 @@ def main():
         print("Error: input for 'o' must be of type string.")
         sys.exit()
 
+#  -------------------CREATING FASTA FILE WITH INPUT SPECIFICATIONS-------------------
+    # Calculating s to generate random nucleotides, a c g and t will be valid if this point is reached
+    s = a + c + g + t
+    # Calculating probabilities and bounds to generate a c g and t nucleotides using a random decimal generator
+    aProb = float(a)/float(s)
+    cProb = float(c)/float(s)
+    gProb = float(g)/float(s)
+    tProb = float(t)/float(s)
+    aLB = 0
+    aUB = aProb
+    cLB = aUB
+    cUB = aUB + cProb
+    gLB = cUB
+    gUB = cUB + gProb
+    tLB = gUB
+    tUB = 1
+    aBounds = [aLB, aUB]  # >=, <
+    cBounds = [cLB, cUB]  # >=, <
+    gBounds = [gLB, gUB]  # >=, <
+    tBounds = [tLB, tUB]  # >=, <=
+    # Creating the output file and writing sequence information to it
+    out = open(o, "w")
+    for i in range(0,k,1):
+        out.write(">\n")
+        for j in range(0,n,1):
+            nucleotideSelect = random.uniform(0,1)
+            if(nucleotideSelect >= aLB and nucleotideSelect < aUB):
+                out.write("A")
+            elif(nucleotideSelect >= cLB and nucleotideSelect < cUB):
+                out.write("C")
+            elif(nucleotideSelect >= gLB and nucleotideSelect < gUB):
+                out.write("G")
+            elif(nucleotideSelect >= tLB and nucleotideSelect <= tUB):
+                out.write("T")
+        out.write("\n")
+
     print("Program run completed successfully.")
     return 0
+
 
 if __name__ == '__main__':
     main()
