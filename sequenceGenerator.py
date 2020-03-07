@@ -87,7 +87,7 @@ def main():
         print("Error: input for 'o' must be of type string.")
         sys.exit()
 
-#  -------------------CREATING FASTA FILE WITH INPUT SPECIFICATIONS-------------------
+    #  -------------------CREATING FASTA FILE WITH INPUT SPECIFICATIONS-------------------
     # Calculating s to generate random nucleotides, a c g and t will be valid if this point is reached
     s = a + c + g + t
     # Calculating probabilities and bounds to generate a c g and t nucleotides using a random decimal generator
