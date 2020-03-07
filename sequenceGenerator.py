@@ -10,6 +10,7 @@
 #      string o : output file name
 
 # Sample call: python sequenceGenerator.py 50 25 25 25 25 3 .03 "output.txt"
+#                                          n  a  c  g  t  k  p       o
 
 import sys
 import random
