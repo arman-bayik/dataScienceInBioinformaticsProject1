@@ -21,18 +21,19 @@ def main():
     if len(sys.argv) < 9:  # Verifying there aren't too few inputs
         print("Error: Too few inputs.\n")
         print("Inputs should be in the form of [run program] n a c g t k p \"o\"")
-        sys.exit()
+        sys.exit(1)
     if len(sys.argv) > 9:  # Verifying there aren't too many inputs
         print("Error: Too many inputs.\n")
         print("Inputs should be in the form of [run program] n a c g t k p \"o\"")
-        sys.exit()
+        sys.exit(1)
+
     try:  # Verifying input of n is correct and storing it in variable n
         n = int(sys.argv[1])
         if n < 0:
             raise ValueError
     except ValueError:
         print("Error: input for 'n' must be positive and of type int.")
-        sys.exit()
+        sys.exit(1)
 
     try:  # Verifying input of a is correct and storing it in variable a
         a = int(sys.argv[2])
@@ -40,7 +41,7 @@ def main():
             raise ValueError
     except ValueError:
         print("Error: input for 'a' must be positive and of type int.")
-        sys.exit()
+        sys.exit(1)
 
     try:  # Verifying input of c is correct and storing it in variable c
         c = int(sys.argv[3])
@@ -48,7 +49,7 @@ def main():
             raise ValueError
     except ValueError:
         print("Error: input for 'c' must be positive and of type int.")
-        sys.exit()
+        sys.exit(1)
 
     try:  # Verifying input of g is correct and storing it in variable g
         g = int(sys.argv[4])
@@ -56,7 +57,7 @@ def main():
             raise ValueError
     except ValueError:
         print("Error: input for 'g' must be positive and of type int.")
-        sys.exit()
+        sys.exit(1)
 
     try:  # Verifying input of t is correct and storing it in variable t
         t = int(sys.argv[5])
@@ -64,7 +65,7 @@ def main():
             raise ValueError
     except ValueError:
         print("Error: input for 't' must be positive and of type int.")
-        sys.exit()
+        sys.exit(1)
 
     try:  # Verifying input of k is correct and storing it in variable k
         k = int(sys.argv[6])
@@ -72,7 +73,7 @@ def main():
             raise ValueError
     except ValueError:
         print("Error: input for 'k' must be positive and of type int.")
-        sys.exit()
+        sys.exit(1)
 
     try:  # Verifying input of p is correct and storing it in variable p
         p = float(sys.argv[7])
@@ -80,12 +81,13 @@ def main():
             raise ValueError
     except ValueError:
         print("Error: input for 'p' must be in the range [0,1] (inclusive) and of type double.")
-        sys.exit()
+        sys.exit(1)
+
     try:  # Verifying input of o is correct and storing it in variable o
         o = str(sys.argv[8])
     except ValueError:
         print("Error: input for 'o' must be of type string.")
-        sys.exit()
+        sys.exit(1)
 
     #  -------------------CREATING FASTA FILE WITH INPUT SPECIFICATIONS-------------------
     # Calculating s to generate random nucleotides, a c g and t will be valid if this point is reached
