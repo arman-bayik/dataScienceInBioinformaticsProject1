@@ -6,6 +6,7 @@
 #      string o : output file name
 
 # Sample call: python sequencePartitioner.py "input.txt" 6 20 "output.txt"
+#                                                i       x y       o
 
 import sys
 
@@ -20,10 +21,29 @@ def main():
         print("Error: Too many inputs.\n")
         print("Inputs should be in the form of [run program] n a c g t k p \"o\"")
         sys.exit()
-    try:  # Verifying input of o is correct and storing it in variable o
+    try:  # Verifying input of i is correct and storing it in variable i
         i = str(sys.argv[1])
     except ValueError:
         print("Error: input for 'i' must be of type string.")
+        sys.exit()
+    try:  # Verifying input of x is correct and storing it in variable x
+        x = int(sys.argv[2])
+        if x <= 0:
+            raise ValueError
+    except ValueError:
+        print("Error: input for 'x' must be positive, nonzero, and of type int.")
+        sys.exit()
+    try:  # Verifying input of y is correct and storing it in variable y
+        y = int(sys.argv[3])
+        if (y <= 0) or (y <= x):
+            raise ValueError
+    except ValueError:
+        print("Error: input for 'y' must be positive, nonzero, greater than or equal to 'x' and of type int.")
+        sys.exit()
+    try:  # Verifying input of o is correct and storing it in variable o
+        o = str(sys.argv[4])
+    except ValueError:
+        print("Error: input for 'o' must be of type string.")
         sys.exit()
 
     print("Program run completed successfully.")
