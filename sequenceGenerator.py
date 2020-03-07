@@ -121,7 +121,7 @@ def main():
             elif(nucleotideSelect >= tLB and nucleotideSelect <= tUB):
                 out.write("T")
         out.write("\n")
-
+    out.close()
     print("Program run completed successfully.")
     return 0
 
