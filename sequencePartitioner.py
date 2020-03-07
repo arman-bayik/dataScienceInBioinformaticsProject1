@@ -47,12 +47,27 @@ def main():
         sys.exit(1)
 
     #  -------------------CREATE A FASTA FILE WITH CHOPPED SEQUENCES-------------------
-    # Read in input sequences
+    # Read in input file contents into array of sequences
     try:
         input_file = open(i, "r")
     except FileNotFoundError:
-        print("Error: specified file, " + i + " does not exist.")
+        print("Error: specified input file, '" + i + "', does not exist.")
         sys.exit(1)
+
+    sequences_array = []
+    for sequence in input_file:
+        sequences_array.append(sequence)
+
+    j = 0
+    while j < len(sequences_array):
+        if ">" in sequences_array[j]:  # remove separation lines from sequences list
+            sequences_array.remove(sequences_array[j])
+            j -= 1
+        else:  # remove trailing newlines from sequences
+            sequences_array[j] = sequences_array[j].rstrip()
+        j += 1
+    for j in range(0, len(sequences_array), 1):
+        print(sequences_array[j])
 
     input_file.close()
     print("Program run completed successfully.")
