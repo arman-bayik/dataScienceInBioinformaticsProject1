@@ -7,7 +7,7 @@
 #      int t : % of sequence that should be T nucleotide
 #      int k : number of sequences
 #      double p : mutation probability (range = [0,1])
-#      string o: output file name
+#      string o : output file name
 
 # Sample call: python sequenceGenerator.py 50 25 25 25 25 3 .03 "output.txt"
 
