@@ -108,21 +108,21 @@ def main():
     g_bounds = [g_lb, g_ub]  # >=, <
     t_bounds = [t_lb, t_ub]  # >=, <=
     # Creating the output file and writing sequence information to it
-    output = open(o, "w")
+    output_file = open(o, "w")
     for i in range(0, k, 1):
-        output.write(">\n")
+        output_file.write(">\n")
         for j in range(0, n, 1):
             nucleotide_select = random.uniform(0, 1)
             if(nucleotide_select >= a_bounds[0]) and (nucleotide_select < a_bounds[1]):
-                output.write("A")
+                output_file.write("A")
             elif(nucleotide_select >= c_bounds[0]) and (nucleotide_select < c_bounds[1]):
-                output.write("C")
+                output_file.write("C")
             elif(nucleotide_select >= g_bounds[0]) and (nucleotide_select < g_bounds[1]):
-                output.write("G")
+                output_file.write("G")
             elif(nucleotide_select >= t_bounds[0]) and (nucleotide_select <= t_bounds[1]):
-                output.write("T")
-        output.write("\n")
-    output.close()
+                output_file.write("T")
+        output_file.write("\n")
+    output_file.close()
     print("Program run completed successfully.")
     return 0
 

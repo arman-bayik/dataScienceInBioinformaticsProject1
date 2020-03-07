@@ -48,8 +48,9 @@ def main():
 
     #  -------------------CREATE A FASTA FILE WITH CHOPPED SEQUENCES-------------------
     # Read in input sequences
-    input = open(i, "r")
+    input_file = open(i, "r")
 
+    input_file.close()
     print("Program run completed successfully.")
     return 0
 
