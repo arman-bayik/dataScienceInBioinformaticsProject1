@@ -46,7 +46,9 @@ def main():
         print("Error: input for 'o' must be of type string.")
         sys.exit()
 
-
+    #  -------------------CREATE A FASTA FILE WITH CHOPPED SEQUENCES-------------------
+    # Read in input sequences
+    input = open(i, "r")
 
     print("Program run completed successfully.")
     return 0
