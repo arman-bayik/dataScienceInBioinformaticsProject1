@@ -9,6 +9,7 @@
 #                                                i       x y       o
 
 import sys
+import random
 
 
 def main():
@@ -54,21 +55,44 @@ def main():
         print("Error: specified input file, '" + i + "', does not exist.")
         sys.exit(1)
 
-    sequences_array = []
+    old_sequences_array = []
     for sequence in input_file:
-        sequences_array.append(sequence)
+        old_sequences_array.append(sequence)
 
     j = 0
-    while j < len(sequences_array):
-        if ">" in sequences_array[j]:  # remove separation lines from sequences list
-            sequences_array.remove(sequences_array[j])
+    while j < len(old_sequences_array):
+        if ">" in old_sequences_array[j]:  # remove separation lines from sequences list
+            old_sequences_array.remove(old_sequences_array[j])
             j -= 1
         else:  # remove trailing newlines from sequences
-            sequences_array[j] = sequences_array[j].rstrip()
+            old_sequences_array[j] = old_sequences_array[j].rstrip()
         j += 1
-    for j in range(0, len(sequences_array), 1):
-        print(sequences_array[j])
 
+    # Create and fill new sequence array from fragmented old sequences
+    new_sequences_array = []
+    for j in range(0, len(old_sequences_array), 1):
+        while len(old_sequences_array[j]) >= x:
+            fragment = "ERROR"
+            if len(old_sequences_array[j]) == x:
+                new_sequences_array.append(old_sequences_array[j])
+                old_sequences_array[j] = ""
+            else:
+                fragment_length = int(random.uniform(x, y))
+                if fragment_length > len(old_sequences_array[j]):
+                    fragment_length = len(old_sequences_array[j])
+                    fragment = old_sequences_array[j][:fragment_length]
+                else:
+                    fragment = old_sequences_array[j][:fragment_length]
+                new_sequences_array.append(fragment)
+                old_sequences_array[j] = old_sequences_array[j][fragment_length:]
+
+    # Write new sequences to output file in FASTA format
+    output_file = open(o, "w")
+    for j in range(0, len(new_sequences_array), 1):
+        output_file.write(">\n" + new_sequences_array[j] + "\n")
+
+    # Close all files
+    output_file.close()
     input_file.close()
     print("Program run completed successfully.")
     return 0
