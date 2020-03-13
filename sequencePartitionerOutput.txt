@@ -1,12 +1,12 @@
 >
 GAGGC
 >
-GGT
+GG
 >
-CT
+TCT
 >
-ACGT
+AC
 >
-TTTA
+GTTTT
 >
-TA
+ATA

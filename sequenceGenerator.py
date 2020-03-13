@@ -90,13 +90,60 @@ def main():
         sys.exit(1)
 
     #  -------------------CREATING FASTA FILE WITH INPUT SPECIFICATIONS-------------------
+    # Creating the output file and writing sequence information to it
+    # output_file = open(o, "w")
+    # for i in range(0, k, 1):
+    #     output_file.write(">\n")
+    #     for j in range(0, n, 1):
+    #         nucleotide_select = random.uniform(0, 1)
+    #         if(nucleotide_select >= a_bounds[0]) and (nucleotide_select < a_bounds[1]):
+    #             output_file.write("A")
+    #         elif(nucleotide_select >= c_bounds[0]) and (nucleotide_select < c_bounds[1]):
+    #             output_file.write("C")
+    #         elif(nucleotide_select >= g_bounds[0]) and (nucleotide_select < g_bounds[1]):
+    #             output_file.write("G")
+    #         elif(nucleotide_select >= t_bounds[0]) and (nucleotide_select <= t_bounds[1]):
+    #             output_file.write("T")
+    #     output_file.write("\n")
+    # output_file.close()
+    # Creating the list of sequences to be output
+    sequences = []
+    for i in range(0, k, 1):
+        sequences.append([])
+        if i == 0:
+            for j in range(0, n, 1):
+                nucleotide_selector = random.uniform(0, 1)
+                sequences[i].append(select_nucleotide(nucleotide_selector, a, c, g, t))
+        else:
+            for j in range(0, n, 1):
+                mutate = random.uniform(0, 1)
+                if mutate <= p:
+                    mutation_select = random.uniform(0, 1)
+                    if mutation_select <= .5:
+                        nucleotide_selector = random.uniform(0, 1)
+                        sequences[i].append(select_nucleotide(nucleotide_selector, a, c, g, t))
+                else:
+                    sequences[i].append(sequences[0][j])
+    # Output list of sequences to file
+    output_file = open(o, "w")
+    for i in range(0, k, 1):
+        output_file.write(">\n")
+        for j in range(0, len(sequences[i]), 1):
+            output_file.write(sequences[i][j])
+        output_file.write("\n")
+    output_file.close()
+    print("Program run completed successfully.")
+    return 0
+
+
+def select_nucleotide(nucleotide_selector, a, c, g, t):
     # Calculating s to generate random nucleotides, a c g and t will be valid if this point is reached
     s = a + c + g + t
     # Calculating probabilities and bounds to generate a c g and t nucleotides using a random decimal generator
-    a_prob = float(a)/float(s)
-    c_prob = float(c)/float(s)
-    g_prob = float(g)/float(s)
-    t_prob = float(t)/float(s)
+    a_prob = float(a) / float(s)
+    c_prob = float(c) / float(s)
+    g_prob = float(g) / float(s)
+    t_prob = float(t) / float(s)
     a_lb = 0
     a_ub = a_prob
     c_lb = a_ub
@@ -109,24 +156,15 @@ def main():
     c_bounds = [c_lb, c_ub]  # >=, <
     g_bounds = [g_lb, g_ub]  # >=, <
     t_bounds = [t_lb, t_ub]  # >=, <=
-    # Creating the output file and writing sequence information to it
-    output_file = open(o, "w")
-    for i in range(0, k, 1):
-        output_file.write(">\n")
-        for j in range(0, n, 1):
-            nucleotide_select = random.uniform(0, 1)
-            if(nucleotide_select >= a_bounds[0]) and (nucleotide_select < a_bounds[1]):
-                output_file.write("A")
-            elif(nucleotide_select >= c_bounds[0]) and (nucleotide_select < c_bounds[1]):
-                output_file.write("C")
-            elif(nucleotide_select >= g_bounds[0]) and (nucleotide_select < g_bounds[1]):
-                output_file.write("G")
-            elif(nucleotide_select >= t_bounds[0]) and (nucleotide_select <= t_bounds[1]):
-                output_file.write("T")
-        output_file.write("\n")
-    output_file.close()
-    print("Program run completed successfully.")
-    return 0
+    if (nucleotide_selector >= a_bounds[0]) and (nucleotide_selector < a_bounds[1]):
+        return "A"
+    elif (nucleotide_selector >= c_bounds[0]) and (nucleotide_selector < c_bounds[1]):
+        return "C"
+    elif (nucleotide_selector >= g_bounds[0]) and (nucleotide_selector < g_bounds[1]):
+        return "G"
+    elif (nucleotide_selector >= t_bounds[0]) and (nucleotide_selector <= t_bounds[1]):
+        return "T"
+    return str(0)
 
 
 if __name__ == '__main__':
