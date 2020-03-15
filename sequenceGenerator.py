@@ -90,22 +90,6 @@ def main():
         sys.exit(1)
 
     #  -------------------CREATING FASTA FILE WITH INPUT SPECIFICATIONS-------------------
-    # Creating the output file and writing sequence information to it
-    # output_file = open(o, "w")
-    # for i in range(0, k, 1):
-    #     output_file.write(">\n")
-    #     for j in range(0, n, 1):
-    #         nucleotide_select = random.uniform(0, 1)
-    #         if(nucleotide_select >= a_bounds[0]) and (nucleotide_select < a_bounds[1]):
-    #             output_file.write("A")
-    #         elif(nucleotide_select >= c_bounds[0]) and (nucleotide_select < c_bounds[1]):
-    #             output_file.write("C")
-    #         elif(nucleotide_select >= g_bounds[0]) and (nucleotide_select < g_bounds[1]):
-    #             output_file.write("G")
-    #         elif(nucleotide_select >= t_bounds[0]) and (nucleotide_select <= t_bounds[1]):
-    #             output_file.write("T")
-    #     output_file.write("\n")
-    # output_file.close()
     # Creating the list of sequences to be output
     sequences = []
     for i in range(0, k, 1):
