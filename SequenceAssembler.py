@@ -13,11 +13,19 @@ import numpy as np
 import random
 
 
-def align_fragments(seq1, seq2, match_penalty, replace_penalty, indel_penalty):
+def align_fragments(s1, s2, match_penalty, replace_penalty, indel_penalty):
     # m: 0-m are the column indexes
     # n: 0-n are the row indexes
-    n = len(seq1)
-    m = len(seq2)
+    n = len(s1)
+    m = len(s2)
+
+    max_i = 0
+    max_j = 0
+
+    # Scenario 1 prefix is the left sequence and the top sequence is the suffix
+    scenario_1 = False
+    # Scenario 2 prefix is the top sequence and the left sequence is the suffix
+    scenario_2 = False
 
     # The DP Matrix V which helps store and compute alignment score
     # V is an n x m matrix
@@ -34,7 +42,7 @@ def align_fragments(seq1, seq2, match_penalty, replace_penalty, indel_penalty):
         for j in range(1, m + 1):
             insert_score = V[i][j - 1] + indel_penalty
             delete_score = V[i - 1][j] + indel_penalty
-            if seq1[i - 1] == seq2[j - 1]:
+            if s1[i - 1] == s2[j - 1]:
                 match_score = V[i - 1][j - 1] + match_penalty
             else:
                 match_score = V[i - 1][j - 1] + replace_penalty
@@ -57,10 +65,12 @@ def align_fragments(seq1, seq2, match_penalty, replace_penalty, indel_penalty):
                 max_i = i
                 max_j = j
                 max_score = V[i][j]
-
     # Stores the aligned versions of the sequences
     aligned_one = []
     aligned_two = []
+    contig = ""
+    prefix = []
+    suffix = []
 
     # Allows us to start from the backtracking path's beginning
     i = max_i
@@ -69,23 +79,46 @@ def align_fragments(seq1, seq2, match_penalty, replace_penalty, indel_penalty):
     while backtrack[i][j] != 0:
         # If we backtracked diagonally from this index
         if backtrack[i][j] == 1:
-            aligned_one = aligned_one.append(seq1[i-1])
-            aligned_two = aligned_two.append(seq2[j-1])
+            # aligned_one.append(s1[i - 1])
+            # aligned_two.append(s2[j - 1])
             i -= 1
             j -= 1
         # If we backtracked diagonally from this index
         elif backtrack[i][j] == 2:
-            aligned_one = aligned_one.append('-')
-            aligned_two = aligned_two.append(seq2[j-1])
+            # aligned_one.append('-')
+            # aligned_two.append(s2[j - 1])
             j -= 1
         elif backtrack[i][j] == 3:
-            aligned_one = aligned_one.append(seq1[i-1])
-            aligned_two = aligned_two.append('-')
+            # aligned_one.append(s1[i - 1])
+            # aligned_two.append('-')
             i -= 1
+    if max_i == n:
+        scenario_1 = True
+    else:
+        scenario_2 = True
 
+    if scenario_1:
+        prefix.append(s1[0:i])
+        suffix.append(s2)
+        for element in prefix:
+            contig += element
+        for element in suffix:
+            contig += element
 
+    if scenario_2:
+        prefix.append(s2[0:j])
+        suffix.append(s1)
+        for element in prefix:
+            contig += element
+        for element in suffix:
+            contig += element
 
-    return max_score
+    # aligned_one.reverse()
+    # aligned_two.reverse()
+    # print(aligned_one)
+    # print(aligned_two)
+
+    return contig, max_score
 
 
 def main():
@@ -140,15 +173,17 @@ def main():
             sequenceFragments.append(fragment)
 
     # Compute Alignment Score
-    score = calculate_score('GTTACTGT', 'ACTGTTA', s, r, d)
-    print(score)
+    contig = align_fragments('ede', 'sed', s, r, d)[0]
+    alignment_score = align_fragments('ede', 'sed', s, r, d)[1]
+    print(contig)
+    print(alignment_score)
 
     # Write score to output file
-    output_file = open(o, "w")
-    output_file.write(str(score))
+    # output_file = open(o, "w")
+    # output_file.write(str(score))
 
     # Close all files
-    output_file.close()
+    # output_file.close()
     input_file.close()
     print("Program run completed successfully.")
 
