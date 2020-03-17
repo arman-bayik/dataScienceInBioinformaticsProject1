@@ -231,10 +231,16 @@ def main():
             assembled_sequence = sequence_fragments[0]
             stop_flag = True
     print(assembled_sequence)
+<<<<<<< HEAD
     # Write sequence to output file
     output_file = open(o, "w")
     output_file.write(">\n")
     output_file.write(assembled_sequence)
+=======
+    # Write score to output file
+    # output_file = open(o, "w")
+    # output_file.write(str(score))
+>>>>>>> 3b0d81cd4d4bdb5c2fd952e7888a679ca5c5ec9d
 
     # Close all files
     output_file.close()
