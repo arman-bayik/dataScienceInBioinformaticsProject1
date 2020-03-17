@@ -76,7 +76,7 @@ def align_fragments(s1, s2, match_penalty, replace_penalty, indel_penalty):
     i = max_i
     j = max_j
 
-    # INFINITE LOOP WHEN THERE ARE 2 BACKTRACKS THAT EQUAL 4
+    # INFINITE LOOP OCCURS SOMETIMES
     while backtrack[i][j] != 0:
         # If we backtracked diagonally from this index
         if backtrack[i][j] == 1:
