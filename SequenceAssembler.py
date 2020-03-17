@@ -27,9 +27,9 @@ def align_fragments(s1, s2, match_penalty, replace_penalty, indel_penalty):
     # Scenario 2 prefix is the top sequence and the left sequence is the suffix
     scenario_2 = False
 
-    # The DP Matrix V which helps store and compute alignment score
-    # V is an n x m matrix
-    V = np.zeros((n + 1, m + 1))
+    # The DP Matrix v which helps store and compute alignment score
+    # v is an n x m matrix
+    v = np.zeros((n + 1, m + 1))
 
     # backtrack is a matrix that stores the traceback path
     backtrack = np.zeros((n + 1, m + 1))
@@ -40,31 +40,31 @@ def align_fragments(s1, s2, match_penalty, replace_penalty, indel_penalty):
     # Calculates score
     for i in range(1, n + 1):
         for j in range(1, m + 1):
-            insert_score = V[i][j - 1] + indel_penalty
-            delete_score = V[i - 1][j] + indel_penalty
+            insert_score = v[i][j - 1] + indel_penalty
+            delete_score = v[i - 1][j] + indel_penalty
             if s1[i - 1] == s2[j - 1]:
-                match_score = V[i - 1][j - 1] + match_penalty
+                match_score = v[i - 1][j - 1] + match_penalty
             else:
-                match_score = V[i - 1][j - 1] + replace_penalty
-            V[i][j] = max(insert_score, delete_score, match_score)
+                match_score = v[i - 1][j - 1] + replace_penalty
+            v[i][j] = max(insert_score, delete_score, match_score)
 
-            # if the score at V(i,j) is the same as the match score then we backtrack diagonally
-            if V[i][j] == match_score:
+            # if the score at v(i,j) is the same as the match score then we backtrack diagonally
+            if v[i][j] == match_score:
                 backtrack[i][j] = 1
-            # if the score at V(i,j) is the same as the insert score then we backtrack to the left
-            if V[i][j] == insert_score:
+            # if the score at v(i,j) is the same as the insert score then we backtrack to the left
+            if v[i][j] == insert_score:
                 backtrack[i][j] = 2
-            # if the score at V(i,j) is the same as the delete score then we backtrack upwards
-            if V[i][j] == delete_score:
+            # if the score at v(i,j) is the same as the delete score then we backtrack upwards
+            if v[i][j] == delete_score:
                 backtrack[i][j] = 3
-            # if the score at V(i,j) is zero then we have finished backtracking
-            if V[i][j] == 0:
+            # if the score at v(i,j) is zero then we have finished backtracking
+            if v[i][j] == 0:
                 backtrack[i][j] = 4
 
-            if V[i][j] >= max_score:
+            if v[i][j] >= max_score:
                 max_i = i
                 max_j = j
-                max_score = V[i][j]
+                max_score = v[i][j]
     # Stores the aligned versions of the sequences
     aligned_one = []
     aligned_two = []
@@ -76,6 +76,7 @@ def align_fragments(s1, s2, match_penalty, replace_penalty, indel_penalty):
     i = max_i
     j = max_j
 
+    # INFINITE LOOP WHEN THERE ARE 2 BACKTRACKS THAT EQUAL 4
     while backtrack[i][j] != 0:
         # If we backtracked diagonally from this index
         if backtrack[i][j] == 1:
@@ -158,7 +159,7 @@ def main():
         sys.exit(1)
 
     #  -------------------CREATE A FASTA FILE WITH REASSEMBLED SEQUENCE-------------------
-    # Read in the sequence fragments and assembling them based off of their aligment score.
+    # Read in the sequence fragments and assembling them based off of their alignment score.
     try:
         input_file = open(i, "r")
     except FileNotFoundError:
@@ -166,17 +167,28 @@ def main():
         sys.exit(1)
 
     # Place the fragments in the list
-    sequenceFragments = []
+    sequence_fragments = []
     for fragment in input_file:
         fragment = fragment[0:len(fragment) - 1]
         if fragment != '>':
-            sequenceFragments.append(fragment)
+            sequence_fragments.append(fragment)
 
     # Compute Alignment Score
-    contig = align_fragments('ede', 'sed', s, r, d)[0]
-    alignment_score = align_fragments('ede', 'sed', s, r, d)[1]
-    print(contig)
-    print(alignment_score)
+    # alignment_result = align_fragments('ede', 'sed', s, r, d)
+    # contig = alignment_result[0]
+    # alignment_score = alignment_result[1]
+    # print(contig)
+    # print(alignment_score)
+
+    # Build 2D scoring matrix to calculate maximum score between all fragment combinations
+    scoring_matrix = np.full((len(sequence_fragments), len(sequence_fragments)), None)
+
+    # Populate upper triangle with results of all fragment alignment combinations
+    for j in range(0, (len(sequence_fragments) - 1), 1):
+        for k in range(j+1, len(sequence_fragments), 1):
+            # scoring_matrix[j][k] = align_fragments(sequence_fragments[j], sequence_fragments[k], s, r, d)
+            print(align_fragments(sequence_fragments[j], sequence_fragments[k], s, r, d)[1])
+            print("[" + str(j) + "," + str(k) + "]")
 
     # Write score to output file
     # output_file = open(o, "w")
