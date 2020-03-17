@@ -1,0 +1,33 @@
+Sample Calls:
+
+python hw1-1.py  50 34 32 65 47 6 .03 "sequenceGeneratorOutput.txt"
+python hw1-2.py sequenceGeneratorOutput.txt 25 40 sequencePartitionerOutput.txt
+python hw1-3.py sequencePartitionerOutput.txt 2 -1 -2 sequenceAssemblerOutput.txt
+
+Info:
+Simulates generating DNA sequences, partitioning them, and shotgun assembles them.
+
+Use:
+
+    python hw1-1.py n a c g t k p o
+        int n : sequence length
+        int a : % of sequence that should be A nucleotide
+        int c : % of sequence that should be C nucleotide
+        int g : % of sequence that should be G nucleotide
+        int t : % of sequence that should be T nucleotide
+        int k : number of sequences
+        double p : mutation probability (range = [0,1])
+        string o : output file name
+
+    python hw1-2.py i x y o
+        string i: input file name
+        int x : minimum fragment length
+        int y : maximum fragment length
+        string o : output file name
+
+    python hw1-3.py i s r d o
+        string i: input file name
+        int  s: score for match (positive integer)
+        int r : penalty for replace(negative integer)
+        int d : penalty for delete/insert(negative integer)
+        string o : output file name
