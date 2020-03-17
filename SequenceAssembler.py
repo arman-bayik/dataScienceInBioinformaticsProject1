@@ -76,7 +76,7 @@ def align_fragments(s1, s2, match_penalty, replace_penalty, indel_penalty):
     i = max_i
     j = max_j
 
-    # INFINITE LOOP OCCURS SOMETIMES
+    # INFINITE LOOP WHEN THERE ARE 2 BACKTRACKS THAT EQUAL 4
     while backtrack[i][j] != 0:
         # If we backtracked diagonally from this index
         if backtrack[i][j] == 1:
@@ -180,8 +180,29 @@ def main():
     # print(contig)
     # print(alignment_score)
 
+    # Build 2D scoring matrix to calculate maximum score between all fragment combinations
+    scoring_matrix = np.full((len(sequence_fragments), len(sequence_fragments)), None)
 
+    stop_flag = False
+    while not stop_flag:
 
+        # Populate upper triangle with results of all fragment alignment combinations
+        for j in range(0, (len(sequence_fragments) - 1), 1):
+            for k in range(j+1, len(sequence_fragments), 1):
+                scoring_matrix[j][k] = align_fragments(sequence_fragments[j], sequence_fragments[k], s, r, d)
+                print("[" + str(scoring_matrix[j][k][0]) + "," + str(scoring_matrix[j][k][1]) + "]")
+
+        # Find the fragment with the highest score
+        max_score = -sys.maxsize
+        max_score_index_j = -1
+        max_score_index_k = -1
+        for j in range(0, len(scoring_matrix) - 1, 1):
+            for k in range(j+1, len(scoring_matrix[j + 1]), 1):
+                score = scoring_matrix[j][k][1]
+                if score > max_score:
+                    max_score = score
+                    max_score_index_j = -1
+                    max_score_index_k = -1
     # Write score to output file
     # output_file = open(o, "w")
     # output_file.write(str(score))
