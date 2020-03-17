@@ -59,7 +59,7 @@ def align_fragments(s1, s2, match_penalty, replace_penalty, indel_penalty):
                 backtrack[i][j] = 3
             # if the score at v(i,j) is zero then we have finished backtracking
             if v[i][j] == 0:
-                backtrack[i][j] = 4
+                backtrack[i][j] = 0
 
             if v[i][j] >= max_score:
                 max_i = i
