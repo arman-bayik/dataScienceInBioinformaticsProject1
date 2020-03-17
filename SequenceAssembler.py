@@ -219,15 +219,18 @@ def main():
             stop_flag = True
 
         # Replace the sequences that formed that fragment with their composite fragment
-        sequence_fragments[max_score_index_j] = scoring_matrix[max_score_index_j][max_score_index_k][0]
+
+        #sequence_fragments[max_score_index_j] = scoring_matrix[max_score_index_j][max_score_index_k][0]
+        sequence_fragments.append(scoring_matrix[max_score_index_j][max_score_index_k][0])
         sequence_fragments.pop(max_score_index_k)
+        sequence_fragments.pop(max_score_index_j)
         print(sequence_fragments)
 
         # Checking if all fragments are equal, if so: output sequence and exit while loop
         if len(sequence_fragments) == 1:
             assembled_sequence = sequence_fragments[0]
             stop_flag = True
-
+    print(assembled_sequence)
     # Write score to output file
     # output_file = open(o, "w")
     # output_file.write(str(score))
