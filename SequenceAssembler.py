@@ -180,15 +180,7 @@ def main():
     # print(contig)
     # print(alignment_score)
 
-    # Build 2D scoring matrix to calculate maximum score between all fragment combinations
-    scoring_matrix = np.full((len(sequence_fragments), len(sequence_fragments)), None)
 
-    # Populate upper triangle with results of all fragment alignment combinations
-    for j in range(0, (len(sequence_fragments) - 1), 1):
-        for k in range(j+1, len(sequence_fragments), 1):
-            # scoring_matrix[j][k] = align_fragments(sequence_fragments[j], sequence_fragments[k], s, r, d)
-            print(align_fragments(sequence_fragments[j], sequence_fragments[k], s, r, d)[1])
-            print("[" + str(j) + "," + str(k) + "]")
 
     # Write score to output file
     # output_file = open(o, "w")
