@@ -9,8 +9,8 @@
 #      double p : mutation probability (range = [0,1])
 #      string o : output file name
 
-# Sample call: python sequenceGenerator.py 50 25 25 25 25 3 .03 "output.txt"
-#                                          n  a  c  g  t  k  p       o
+# Sample call: python hw1-1.py 50 25 25 25 25 3 .03 "output.txt"
+#                              n  a  c  g  t  k  p       o
 
 import sys
 import random

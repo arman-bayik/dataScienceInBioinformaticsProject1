@@ -7,6 +7,7 @@
 #      string o: output file name
 
 # Sample call: python sequenceAssembler.py "input.txt" 5 -2 2  "output.txt"
+#                                               i      s  r d        o
 
 import sys
 import numpy as np
@@ -180,11 +181,12 @@ def main():
     # print(contig)
     # print(alignment_score)
 
+    # Build 2D scoring matrix to calculate maximum score between all fragment combinations
+    scoring_matrix = np.full((len(sequence_fragments), len(sequence_fragments)), None)
+
     assembled_sequence = "EMPTY"
     stop_flag = False
     while not stop_flag:
-        # Build 2D scoring matrix to calculate maximum score between all fragment combinations
-        scoring_matrix = np.full((len(sequence_fragments), len(sequence_fragments)), None)
 
         # Populate upper triangle with results of all fragment alignment combinations
         for j in range(0, (len(sequence_fragments) - 1), 1):
@@ -192,16 +194,46 @@ def main():
                 scoring_matrix[j][k] = align_fragments(sequence_fragments[j], sequence_fragments[k], s, r, d)
 
         # Find the aligned fragment with the highest score and its index
-        max_score = -sys.maxsize
+        max_score = int(-sys.maxsize)
         max_score_index_j = -1
         max_score_index_k = -1
         for j in range(0, len(scoring_matrix) - 1, 1):
-            for k in range(j + 1, len(scoring_matrix[j + 1]), 1):
-                score = scoring_matrix[j][k][1]
-                if score > max_score:
-                    max_score = score
-                    max_score_index_j = j
-                    max_score_index_k = k
+            for k in range(j+1, len(scoring_matrix[j + 1]), 1):
+                if sequence_fragments[j] != sequence_fragments[k]:
+                    score = scoring_matrix[j][k][1]
+                    if score > max_score:
+                        max_score = score
+                        max_score_index_j = j
+                        max_score_index_k = k
+                else:
+                    print("[" + str(sequence_fragments[j]) + "," + str(sequence_fragments[k]) + "] equal ["
+                          + str(j) + " : " + str(k) + "]")
+                # if score > max_score:
+                #     if max_score_index_j != -1 and max_score_index_k != -1:
+                #         fragments_equal = scoring_matrix[max_score_index_j][max_score_index_k][0] == \
+                #                           scoring_matrix[j][k][0]
+                #         if not fragments_equal:
+                #             max_score = score
+                #             max_score_index_j = j
+                #             max_score_index_k = k
+                #         # elif fragments_equal and score > max_score:
+                #         #     max_score = score
+                #         #     max_score_index_j = j
+                #         #     max_score_index_k = k
+                #         else:
+                #             print("[" + str(j) + "," + str(k) + "] equal")
+                #         # else:
+                #         #     print("[" + str(j) + "," + str(k) + "] equal")
+                #     else:
+                #         max_score = score
+                #         max_score_index_j = j
+                #         max_score_index_k = k
+                #         # print("[" + str(j) + "," + str(k) + "]")
+                #         # for l in range(0, len(scoring_matrix) - 1, 1):
+                #         #     for m in range(l+1, len(scoring_matrix), 1):
+                #         #         print("[" + str(scoring_matrix[l][m][0]) + ", " + str(scoring_matrix[l][m][1]) + "]",
+                #         #               end=" ")
+                #         #     print("\n")
 
         # Checking if maximum score is negative, if so: output longest fragment
         if max_score < 0:
@@ -219,20 +251,24 @@ def main():
             stop_flag = True
 
         # Replace the sequences that formed that fragment with their composite fragment
-
-        #sequence_fragments[max_score_index_j] = scoring_matrix[max_score_index_j][max_score_index_k][0]
-        sequence_fragments.append(scoring_matrix[max_score_index_j][max_score_index_k][0])
-        sequence_fragments.pop(max_score_index_k)
-        sequence_fragments.pop(max_score_index_j)
-        print(sequence_fragments)
+        sequence_fragments[max_score_index_j] = scoring_matrix[max_score_index_j][max_score_index_k][0]
+        sequence_fragments[max_score_index_k] = scoring_matrix[max_score_index_j][max_score_index_k][0]
 
         # Checking if all fragments are equal, if so: output sequence and exit while loop
-        if len(sequence_fragments) == 1:
-            assembled_sequence = sequence_fragments[0]
+        all_fragments_equal = True
+        first_fragment = scoring_matrix[0][1][0]
+        for j in range(0, len(scoring_matrix) - 1, 1):
+            for k in range(j+1, len(scoring_matrix[j + 1]), 1):
+                if scoring_matrix[j][k][0] != first_fragment:
+                    all_fragments_equal = False
+                    break
+            if not all_fragments_equal:
+                break
+        if all_fragments_equal:
+            assembled_sequence = first_fragment
             stop_flag = True
-    print(assembled_sequence)
 
-    # Write sequence to output file
+    # Write assembled sequence to output file
     output_file = open(o, "w")
     output_file.write(">\n")
     output_file.write(assembled_sequence)

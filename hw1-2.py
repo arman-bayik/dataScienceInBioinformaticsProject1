@@ -5,8 +5,8 @@
 #      int y : maximum fragment length
 #      string o : output file name
 
-# Sample call: python sequencePartitioner.py "input.txt" 6 20 "output.txt"
-#                                                i       x y       o
+# Sample call: python hw1-2.py "input.txt" 6 20 "output.txt"
+#                                  i       x y       o
 
 import sys
 import random
