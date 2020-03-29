@@ -1,6 +1,6 @@
 Sample Calls:
 
-python hw1-1.py  50 34 32 65 47 5 .03 "sequenceGeneratorOutput.txt"
+python hw1-1.py  50 34 32 65 47 8 .03 "sequenceGeneratorOutput.txt"
 python hw1-2.py "sequenceGeneratorOutput.txt" 12 23 "sequencePartitionerOutput.txt"
 python hw1-3.py "sequencePartitionerOutput.txt" 2 -1 -2 "sequenceAssemblerOutput.txt"
 

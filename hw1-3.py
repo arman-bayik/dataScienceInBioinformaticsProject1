@@ -208,32 +208,6 @@ def main():
                 else:
                     print("[" + str(sequence_fragments[j]) + "," + str(sequence_fragments[k]) + "] equal ["
                           + str(j) + " : " + str(k) + "]")
-                # if score > max_score:
-                #     if max_score_index_j != -1 and max_score_index_k != -1:
-                #         fragments_equal = scoring_matrix[max_score_index_j][max_score_index_k][0] == \
-                #                           scoring_matrix[j][k][0]
-                #         if not fragments_equal:
-                #             max_score = score
-                #             max_score_index_j = j
-                #             max_score_index_k = k
-                #         # elif fragments_equal and score > max_score:
-                #         #     max_score = score
-                #         #     max_score_index_j = j
-                #         #     max_score_index_k = k
-                #         else:
-                #             print("[" + str(j) + "," + str(k) + "] equal")
-                #         # else:
-                #         #     print("[" + str(j) + "," + str(k) + "] equal")
-                #     else:
-                #         max_score = score
-                #         max_score_index_j = j
-                #         max_score_index_k = k
-                #         # print("[" + str(j) + "," + str(k) + "]")
-                #         # for l in range(0, len(scoring_matrix) - 1, 1):
-                #         #     for m in range(l+1, len(scoring_matrix), 1):
-                #         #         print("[" + str(scoring_matrix[l][m][0]) + ", " + str(scoring_matrix[l][m][1]) + "]",
-                #         #               end=" ")
-                #         #     print("\n")
 
         # Checking if maximum score is negative, if so: output longest fragment
         if max_score < 0:
@@ -251,8 +225,9 @@ def main():
             stop_flag = True
 
         # Replace the sequences that formed that fragment with their composite fragment
-        sequence_fragments[max_score_index_j] = scoring_matrix[max_score_index_j][max_score_index_k][0]
-        sequence_fragments[max_score_index_k] = scoring_matrix[max_score_index_j][max_score_index_k][0]
+        if not stop_flag:
+            sequence_fragments[max_score_index_j] = scoring_matrix[max_score_index_j][max_score_index_k][0]
+            sequence_fragments[max_score_index_k] = scoring_matrix[max_score_index_j][max_score_index_k][0]
 
         # Checking if all fragments are equal, if so: output sequence and exit while loop
         all_fragments_equal = True
